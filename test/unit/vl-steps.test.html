@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../../web-component-tester/browser.js"></script>
+
+  <script type="module" src="../../src/vl-steps.js"></script>
+  <script type="module" src="../../src/vl-step.js"></script>
+  <script type="module" src="../../src/vl-duration-step.js"></script>
+</head>
+
+<body>
+  <test-fixture id="vl-steps-fixture">
+    <template>
+      <vl-steps>
+        <vl-step></vl-step>
+        <vl-duration-step></vl-duration-step>
+        <vl-step></vl-step>
+        <vl-duration-step></vl-duration-step>
+      </vl-steps>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('<vl-steps>', () => {
+      const should = chai.should();
+
+      test('krijgt de juiste class wanneer de step het timeline attribuut bevat', () => {
+        const steps = fixture('vl-steps-fixture');
+        const attribute = 'data-vl-timeline';
+        const prefix = 'vl-steps--';
+        const clazz = `${prefix}${attribute}`;
+        const element = steps._stepsElement;
+        assert.isFalse(element.classList.contains(clazz));
+        steps.setAttribute(attribute, '');
+        assert.isTrue(element.classList.contains(clazz));
+        steps.removeAttribute(attribute);
+        assert.isFalse(element.classList.contains(clazz));
+      });
+
+      test('zal voor elke step en duration-step element een template renderen', () => {
+        const steps = fixture('vl-steps-fixture');
+        assert.lengthOf(steps._stepsElement.children, steps.children.length);
+        [...steps._stepsElement.children].forEach((child, index) => {
+          assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+        });
+      });
+
+      test('zal al de child elementen opnieuw renderen zodra er iets wijzigt aan child element', (done) => {
+        const steps = fixture('vl-steps-fixture');
+        const step = steps.querySelector('vl-step');
+        step.setAttribute('disabled', '');
+        setTimeout(() => {
+          [...steps._stepsElement.children].forEach((child, index) => {
+            assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+          });
+
+          const stepDuration = steps.querySelector('vl-duration-step');
+          stepDuration.innerText = 'test';
+          setTimeout(() => {
+            [...steps._stepsElement.children].forEach((child, index) => {
+              assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+            });
+            done();
+          });
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
