@@ -26,7 +26,6 @@
       test('zal de child elementen toevoegen aan het step duration element', () => {
         const stepDuration = fixture('vl-duration-step-fixture');
         [... stepDuration._element.children].forEach((child, index) => {
-          debugger;
           assert.isTrue(child.isEqualNode(stepDuration.children[index]));
         });
       });
