@@ -1,6 +1,6 @@
 import { VlElement, define } from '/node_modules/vl-ui-core/dist/vl-core.js';
-import './vl-step.js';
-import './vl-duration-step.js';
+import '/src/vl-step.js';
+import '/src/vl-duration-step.js';
 
 /**
  * VlSteps
