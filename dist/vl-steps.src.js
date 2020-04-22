@@ -49,8 +49,12 @@ export class VlSteps extends VlElement(HTMLElement) {
     }
 
     _processSteps() {
-        this._stepsElement.innerHTML = ``;
-        this.querySelectorAll('vl-step, vl-duration-step').forEach(item => this._stepsElement.append(item.template));
+        customElements.whenDefined('vl-step').then(() => {
+            customElements.whenDefined('vl-duration-step').then(() => {
+                this._stepsElement.innerHTML = ``;
+                this.querySelectorAll('vl-step, vl-duration-step').forEach(item => this._stepsElement.append(item.template));
+            });
+        });
     }
 
     __observeChildElements(callback) {
