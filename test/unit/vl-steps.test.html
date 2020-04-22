@@ -40,11 +40,16 @@
         assert.isFalse(element.classList.contains(clazz));
       });
 
-      test('zal voor elke step en duration-step element een template renderen', () => {
+      test('zal voor elke step en duration-step element een template renderen', (done) => {
         const steps = fixture('vl-steps-fixture');
-        assert.lengthOf(steps._stepsElement.children, steps.children.length);
-        [...steps._stepsElement.children].forEach((child, index) => {
-          assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+        customElements.whenDefined('vl-step').then(() => {
+          customElements.whenDefined('vl-duration-step').then(() => {
+            assert.lengthOf(steps._stepsElement.children, steps.children.length);
+            [...steps._stepsElement.children].forEach((child, index) => {
+              assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+            });
+            done();
+          });
         });
       });
 
