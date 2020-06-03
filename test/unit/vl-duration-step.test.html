@@ -21,11 +21,9 @@
 
   <script>
     suite('<vl-duration-step>', () => {
-      const should = chai.should();
-
       test('zal de child elementen toevoegen aan het step duration element', () => {
         const stepDuration = fixture('vl-duration-step-fixture');
-        [... stepDuration._element.children].forEach((child, index) => {
+        [...stepDuration._element.children].forEach((child, index) => {
           assert.isTrue(child.isEqualNode(stepDuration.children[index]));
         });
       });
