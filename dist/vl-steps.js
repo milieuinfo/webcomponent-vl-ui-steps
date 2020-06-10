@@ -1,6 +1,6 @@
 import {vlElement, define} from '/node_modules/vl-ui-core/dist/vl-core.js';
-import /node_modules/vl-ui-steps/dist/vl-step.js;
-import /node_modules/vl-ui-steps/dist/vl-duration-step.js;
+import '/node_modules/vl-ui-steps/dist/vl-step.js';
+import '/node_modules/vl-ui-steps/dist/vl-duration-step.js';
 
 /**
  * VlSteps
@@ -24,7 +24,7 @@ export class VlSteps extends vlElement(HTMLElement) {
   constructor() {
     super(`
         <style>
-            @import /node_modules/vl-ui-steps/dist/style.css;
+            @import '/node_modules/vl-ui-steps/dist/style.css';
         </style>
         <ul id="steps" class="vl-steps"></ul>
     `);
