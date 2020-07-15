@@ -40,11 +40,11 @@
 		"vl-ui-core": "^5.6.1"
 	},
 	"peerDependencies": {
-		"vl-ui-core": "^5.5.5"
+		"vl-ui-core": "^5.6.1"
 	},
 	"devDependencies": {
 		"@govflanders/vl-ui-steps": "3.9.2",
 		"@govflanders/vl-ui-util": "^3.10.1",
-		"vl-ui-util": "^5.2.9"
+		"vl-ui-util": "^5.2.10"
 	}
 }
