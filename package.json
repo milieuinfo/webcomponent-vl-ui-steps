@@ -1,6 +1,6 @@
 {
 	"name": "vl-ui-steps",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "De steps component bevat een verticale lijst van genummerde stappen. Stappen kunnen gebruikt worden om de gebruiker stap voor stap door een procedure te begeleiden.",
 	"author": "DIDM",
 	"license": "MIT",
