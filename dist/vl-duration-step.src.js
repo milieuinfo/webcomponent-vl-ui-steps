@@ -6,7 +6,6 @@ import {vlElement, define} from 'vl-ui-core';
  * @classdesc De step duration component stelt een moment tussen twee stappen voor.
  *
  * @extends HTMLElement
- * @mixin vlElement
  *
  * @see {@link https://www.github.com/milieuinfo/webcomponent-vl-ui-steps/releases/latest|Release notes}
  * @see {@link https://www.github.com/milieuinfo/webcomponent-vl-ui-steps/issues|Issues}
