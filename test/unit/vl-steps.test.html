@@ -24,7 +24,7 @@
   </test-fixture>
 
   <script>
-    suite('<vl-steps>', () => {
+    suite('vl-steps', () => {
       test('krijgt de juiste class wanneer de step het timeline attribuut bevat', () => {
         const steps = fixture('vl-steps-fixture');
         const attribute = 'data-vl-timeline';
@@ -54,7 +54,7 @@
       test('zal al de child elementen opnieuw renderen zodra er iets wijzigt aan child element', (done) => {
         const steps = fixture('vl-steps-fixture');
         const step = steps.querySelector('vl-step');
-        step.setAttribute('disabled', '');
+        step.setAttribute('data-vl-disabled', '');
         setTimeout(() => {
           [...steps._stepsElement.children].forEach((child, index) => {
             assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
