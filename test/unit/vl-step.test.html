@@ -38,9 +38,9 @@
         ['success', 'warning', 'error'].forEach((type) => {
           const clazz = `${prefix}${type}`;
           assert.isFalse(step._element.classList.contains(clazz));
-          step.setAttribute(`data-vl-${attribute}`, type);
+          step.setAttribute(attribute, type);
           assert.isTrue(step._element.classList.contains(clazz));
-          step.removeAttribute(`data-vl-${attribute}`);
+          step.removeAttribute(attribute);
           assert.isFalse(step._element.classList.contains(clazz));
         });
       });
