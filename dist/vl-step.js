@@ -52,7 +52,7 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   get template() {
-    const template = this._template(this.shadowRoot.innerHTML).firstElementChild;
+    const template = this._element.cloneNode(true);
     if (this._isAccordion) {
       vl.accordion.dress(template);
     }

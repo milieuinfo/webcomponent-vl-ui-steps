@@ -44,7 +44,7 @@
           customElements.whenDefined('vl-duration-step').then(() => {
             assert.lengthOf(steps._stepsElement.children, steps.children.length);
             [...steps._stepsElement.children].forEach((child, index) => {
-              assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+              assert.isTrue(child.isEqualNode(steps.children[index].template));
             });
             done();
           });
@@ -57,14 +57,14 @@
         step.setAttribute('data-vl-disabled', '');
         setTimeout(() => {
           [...steps._stepsElement.children].forEach((child, index) => {
-            assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+            assert.isTrue(child.isEqualNode(steps.children[index].template));
           });
 
           const stepDuration = steps.querySelector('vl-duration-step');
           stepDuration.innerText = 'test';
           setTimeout(() => {
             [...steps._stepsElement.children].forEach((child, index) => {
-              assert.isTrue(child.isEqualNode(steps.children[index].template.firstElementChild));
+              assert.isTrue(child.isEqualNode(steps.children[index].template));
             });
             done();
           });
