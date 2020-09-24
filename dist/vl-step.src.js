@@ -55,6 +55,7 @@ export class VlStep extends vlElement(HTMLElement) {
     const template = this._element.cloneNode(true);
     if (this._isAccordion) {
       vl.accordion.dress(template);
+      template.querySelector('#content').addEventListener('click', (e) => e.stopPropagation());
     }
     return template;
   }
