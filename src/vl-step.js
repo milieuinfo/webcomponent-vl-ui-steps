@@ -1,4 +1,6 @@
 import {vlElement, define} from '/node_modules/vl-ui-core/dist/vl-core.js';
+import '/node_modules/@govflanders/vl-ui-util/dist/js/util.js';
+import '/node_modules/@govflanders/vl-ui-accordion/dist/js/accordion.js';
 
 /**
  * VlStep
@@ -18,7 +20,7 @@ import {vlElement, define} from '/node_modules/vl-ui-core/dist/vl-core.js';
  */
 export class VlStep extends vlElement(HTMLElement) {
   static get _observedAttributes() {
-    return ['type'];
+    return ['type', 'accordion'];
   }
 
   static get _observedChildClassAttributes() {
@@ -50,7 +52,11 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   get template() {
-    return this._template(this.shadowRoot.innerHTML);
+    const template = this._template(this.shadowRoot.innerHTML).firstElementChild;
+    if (this._isAccordion) {
+      vl.accordion.dress(template);
+    }
+    return template;
   }
 
   get _iconElement() {
@@ -61,16 +67,24 @@ export class VlStep extends vlElement(HTMLElement) {
     return this._iconElement.querySelector('#sub-icon');
   }
 
+  get _wrapperElement() {
+    return this._shadow.querySelector('.vl-step__wrapper');
+  }
+
+  get _headerElement() {
+    return this._wrapperElement.querySelector('.vl-step__header');
+  }
+
   get _titleElement() {
-    return this._shadow.querySelector('#title');
+    return this._headerElement.querySelector('#title');
   }
 
   get _titleAnnotationElement() {
-    return this._titleElement.querySelector('#title-annotation');
+    return this._headerElement.querySelector('#title-annotation');
   }
 
   get _subTitleElement() {
-    return this._shadow.querySelector('#sub-title');
+    return this._headerElement.querySelector('#sub-title');
   }
 
   get _contentElement() {
@@ -81,8 +95,35 @@ export class VlStep extends vlElement(HTMLElement) {
     return 'vl-step--';
   }
 
+  get _isAccordion() {
+    return this.hasAttribute('accordion');
+  }
+
+  _getAccordionHeaderHTML() {
+    return `
+      <button class="vl-step__header js-vl-accordion__toggle">
+        <div class="vl-step__header__titles">
+          <h3 id="title" class="vl-step__title"></h3>
+        </div>
+        <div class="vl-step__header__info" aria-hidden="true">
+          <em class="vl-step__accordion-toggle"></em>
+        </div>
+      </button>
+    `;
+  }
+
   _typeChangedCallback(oldValue, newValue) {
     this._changeClass(this._element, oldValue, newValue, this._classPrefix);
+  }
+
+  _accordionChangedCallback(oldValue, newValue) {
+    if (newValue != undefined) {
+      this._element.classList.add('vl-step--accordion');
+      this._element.classList.add('js-vl-accordion');
+      this._headerElement.remove();
+      this._wrapperElement.insertAdjacentHTML('afterbegin', this._getAccordionHeaderHTML());
+      this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
+    }
   }
 
   _processSlots() {
