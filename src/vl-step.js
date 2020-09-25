@@ -80,6 +80,10 @@ export class VlStep extends vlElement(HTMLElement) {
     return this._headerElement.querySelector('#title');
   }
 
+  get _titleLabelElement() {
+    return this._headerElement.querySelector('#title-label');
+  }
+
   get _titleAnnotationElement() {
     return this._headerElement.querySelector('#title-annotation');
   }
@@ -104,7 +108,7 @@ export class VlStep extends vlElement(HTMLElement) {
     return `
       <button class="vl-step__header js-vl-accordion__toggle">
         <div class="vl-step__header__titles">
-          <h3 id="title" class="vl-step__title"></h3>
+          <h3 id="title" class="vl-step__title"></h3><slot id="title-label" name="title-label"></slot>
         </div>
         <div class="vl-step__header__info" aria-hidden="true">
           <em class="vl-step__accordion-toggle"></em>
@@ -131,6 +135,7 @@ export class VlStep extends vlElement(HTMLElement) {
     this.__processSlot(this.querySelector('[slot="identifier"]'), (slot) => this._iconElement.prepend(slot));
     this.__processSlot(this.querySelector('[slot="identifier-annotation"]'), (slot) => this._subIconElement.append(slot));
     this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
+    this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
     this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
     this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
