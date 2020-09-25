@@ -108,7 +108,9 @@ export class VlStep extends vlElement(HTMLElement) {
     return `
       <button class="vl-step__header js-vl-accordion__toggle">
         <div class="vl-step__header__titles">
-          <h3 id="title" class="vl-step__title"></h3><slot id="title-label" name="title-label"></slot>
+          <h3 id="title" class="vl-step__title">
+            <span id="title-label"></span>
+          </h3>
         </div>
         <div class="vl-step__header__info" aria-hidden="true">
           <em class="vl-step__accordion-toggle"></em>
