@@ -128,6 +128,7 @@ export class VlStep extends vlElement(HTMLElement) {
       this._headerElement.remove();
       this._wrapperElement.insertAdjacentHTML('afterbegin', this._getAccordionHeaderHTML());
       this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
+      this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     }
   }
 
@@ -135,7 +136,6 @@ export class VlStep extends vlElement(HTMLElement) {
     this.__processSlot(this.querySelector('[slot="identifier"]'), (slot) => this._iconElement.prepend(slot));
     this.__processSlot(this.querySelector('[slot="identifier-annotation"]'), (slot) => this._subIconElement.append(slot));
     this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
     this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
     this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
