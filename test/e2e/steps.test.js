@@ -92,4 +92,22 @@ describe('vl-steps', async () => {
     const durationStep = await steps.getDurationStep(1);
     await assert.eventually.equal(durationStep.getText(), 'Vrije tijd: 1 uur');
   });
+
+  it('als gebruiker kan ik het verschil zien tussen een toggleable en normale stap', async () => {
+    const steps = await vlStepsPage.getSteps(2);
+    const step = await steps.getStep(1);
+    const toggleableStep = await steps.getStep(2);
+    await assert.eventually.isFalse(step.isToggleable());
+    await assert.eventually.isTrue(toggleableStep.isToggleable());
+  });
+
+  it('als gebruiker kan ik een toggleable step openen en sluiten', async () => {
+    const steps = await vlStepsPage.getSteps(2);
+    const step = await steps.getStep(1);
+    const toggleableStep = await steps.getStep(2);
+    await assert.eventually.isTrue(step.isOpen());
+    await assert.eventually.isFalse(toggleableStep.isOpen());
+    await toggleableStep.toggle();
+    await assert.eventually.isTrue(toggleableStep.isOpen());
+  });
 });
