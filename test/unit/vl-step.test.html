@@ -7,6 +7,7 @@
   <script src="../../../web-component-tester/browser.js"></script>
 
   <script type="module" src="../../src/vl-step.js"></script>
+  <script src="/node_modules/sinon/pkg/sinon.js"></script>
 </head>
 
 <body>
@@ -22,6 +23,7 @@
         <span slot="identifier">identifier</span>
         <span slot="identifier-annotation">identifier-annotation</span>
         <span slot="title">title</span>
+        <span slot="title-label">title-label</span>
         <span slot="title-annotation">title-annotation</span>
         <span slot="sub-title">sub-title</span>
         <span slot="content">content</span>
@@ -29,8 +31,23 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="vl-step-toggleable-fixture">
+    <template>
+      <vl-step data-vl-toggleable>
+        <span slot="title">title</span>
+        <span slot="title-label">title-label</span>
+      </vl-step>
+    </template>
+  </test-fixture>
+
   <script>
     suite('vl-step', () => {
+      const sandbox = sinon.createSandbox();
+
+      teardown(() => {
+        sandbox.restore();
+      });
+
       test('krijgt de juiste class wanneer de step het type attribuut bevat', () => {
         const step = fixture('vl-step-fixture');
         const attribute = 'data-vl-type';
@@ -72,14 +89,17 @@
         const step = fixture('vl-step-slots-fixture');
         const titleElement = step.querySelector('[slot="title"]');
         const titleSlot = step.shadowRoot.querySelector('[slot="title"]');
+        const titleLabelElement = step.querySelector('[slot="title-label"]');
+        const titleLabelSlot = step.shadowRoot.querySelector('[slot="title-label"]');
         const titleAnnotationElement = step.querySelector('[slot="title-annotation"]');
         const titleAnnotationSlot = step.shadowRoot.querySelector('[slot="title-annotation"]');
         const subTitleElement = step.querySelector('[slot="sub-title"]');
         const subTitleSlot = step.shadowRoot.querySelector('[slot="sub-title"]');
         assert.isTrue(titleSlot.isEqualNode(titleElement));
+        assert.isTrue(titleLabelSlot.isEqualNode(titleLabelElement));
         assert.isTrue(titleAnnotationSlot.isEqualNode(titleAnnotationElement));
         assert.isTrue(subTitleSlot.isEqualNode(subTitleElement));
-        assert.equal(step._titleElement.innerText, `${titleElement.innerText} ${titleAnnotationElement.innerText}`);
+        assert.equal(step._titleElement.innerText, `${titleElement.innerText} ${titleLabelElement.innerText} ${titleAnnotationElement.innerText}`);
         assert.equal(step._subTitleElement.innerText, subTitleElement.innerText);
       });
 
@@ -107,6 +127,30 @@
         assert.isTrue(step._titleAnnotationElement.hidden);
         assert.isFalse(step._subTitleElement.hidden);
         assert.isTrue(step._contentElement.hidden);
+      });
+
+      test('een toggleable step zal de accordion dress functie correct aanroepen', () => {
+        sandbox.spy(vl.accordion, 'dress');
+        const step = fixture('vl-step-toggleable-fixture');
+        assert.isTrue(vl.accordion.dress.calledWith(step.template));
+      });
+
+      test('bij een toggleable step zal de click op de content tegengehouden worden om te voorkomen dat de step geopend of gesloten wordt', () => {
+        const step = fixture('vl-step-toggleable-fixture');
+        assert.isFalse(step.template.classList.contains('js-vl-accordion--open'));
+        step.shadowRoot.querySelector('#content').click();
+        assert.isFalse(step.template.classList.contains('js-vl-accordion--open'));
+      });
+
+      test('kan de titel bepalen via een slot van een toggleable step', () => {
+        const step = fixture('vl-step-toggleable-fixture');
+        const titleElement = step.querySelector('[slot="title"]');
+        const titleSlot = step.shadowRoot.querySelector('[slot="title"]');
+        const titleLabelElement = step.querySelector('[slot="title-label"]');
+        const titleLabelSlot = step.shadowRoot.querySelector('[slot="title-label"]');
+        assert.isTrue(titleSlot.isEqualNode(titleElement));
+        assert.isTrue(titleLabelSlot.isEqualNode(titleLabelElement));
+        assert.equal(step._titleElement.innerText, `${titleElement.innerText} ${titleLabelElement.innerText}`);
       });
     });
   </script>

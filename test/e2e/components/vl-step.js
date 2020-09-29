@@ -2,6 +2,11 @@ const {VlElement} = require('vl-ui-core').Test;
 const {By} = require('vl-ui-core').Test.Setup;
 
 class VlStep extends VlElement {
+  async toggle() {
+    const title = await this.getTitle();
+    await title.click();
+  }
+
   async getIdentifier() {
     return this._getSlotElement('identifier');
   }
@@ -40,6 +45,19 @@ class VlStep extends VlElement {
 
   async isError() {
     return this._hasClass('error');
+  }
+
+  async isToggleable() {
+    return this._hasClass('accordion');
+  }
+
+  async isOpen() {
+    const toggleable = await this.isToggleable();
+    if (toggleable) {
+      return this.hasClass('js-vl-accordion--open');
+    } else {
+      return true;
+    }
   }
 
   async _hasClass(type) {
