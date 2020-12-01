@@ -1,10 +1,11 @@
-const {assert, driver} = require('vl-ui-core').Test.Setup;
+const {assert, getDriver} = require('vl-ui-core').Test.Setup;
 const VlStepsPage = require('./pages/vl-steps.page');
 
 describe('vl-steps', async () => {
-  const vlStepsPage = new VlStepsPage(driver);
+  let vlStepsPage;
 
   before(() => {
+    vlStepsPage = new VlStepsPage(getDriver());
     return vlStepsPage.load();
   });
 
