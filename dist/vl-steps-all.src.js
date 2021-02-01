@@ -1,6 +1,6 @@
-import {VlSteps} from 'vl-ui-steps/dist/vl-steps.src.js';
-import {VlStep} from 'vl-ui-steps/dist/vl-step.src.js';
-import {VlDurationStep} from 'vl-ui-steps/dist/vl-duration-step.src.js';
+import {VlSteps} from '../dist/vl-steps.src.js';
+import {VlStep} from '../dist/vl-step.src.js';
+import {VlDurationStep} from '../dist/vl-duration-step.src.js';
 
 export {
   VlSteps,
