@@ -16,7 +16,12 @@ import {vlElement, define} from '/node_modules/vl-ui-core/dist/vl-core.js';
 export class VlDurationStep extends vlElement(HTMLElement) {
   constructor() {
     super(`
-      <li class="vl-duration-step"></li>
+       <style>
+        @import '/src/style.css';
+      </style>
+      <li class="vl-duration-step">
+        <slot></slot>
+      </li>
     `);
   }
 
@@ -29,7 +34,7 @@ export class VlDurationStep extends vlElement(HTMLElement) {
   }
 
   _processSlots() {
-    [...this.childNodes].forEach((child) => this._element.append(child.cloneNode(true)));
+    // [...this.childNodes].forEach((child) => this._element.append(child.cloneNode(true)));
   }
 }
 
