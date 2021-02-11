@@ -1,4 +1,7 @@
-import {vlElement, define} from 'vl-ui-core';
+import {
+  define,
+  nativeVlElement,
+} from 'vl-ui-core';
 import '@govflanders/vl-ui-util/dist/js/util.js';
 import '@govflanders/vl-ui-accordion/dist/js/accordion.js';
 
@@ -19,9 +22,9 @@ import '@govflanders/vl-ui-accordion/dist/js/accordion.js';
  * @see {@link https://webcomponenten.omgeving.vlaanderen.be/demo/vl-steps.html|Demo}
  *
  */
-export class VlStep extends vlElement(HTMLElement) {
+export class VlStep extends nativeVlElement(HTMLLIElement) {
   static get _observedAttributes() {
-    return ['type', 'toggleable'];
+    return ['type', 'toggleable', 'identifier', 'identifier-annotation', 'title', 'title-label', 'sub-title', 'title-annotation'];
   }
 
   static get _observedChildClassAttributes() {
@@ -29,27 +32,38 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   constructor() {
-    super(`
-      <li class="vl-step">
-        <div id="icon" class="vl-step__icon">
-          <span id="sub-icon" class="vl-step__icon__sub"></span>
+    super();
+    this.classList.add('vl-step');
+    this.appendChild(this._template(`
+        <div class="vl-step__icon">
+          <span id="icon"></span>
+          <span class="vl-step__icon__sub">
+            <span id="sub-icon"></span>
+          </span>
         </div>
         <div class="vl-step__wrapper">
           <div class="vl-step__header">
             <div class="vl-step__header__titles">
-              <h3 id="title" class="vl-step__title">
-                <span id="title-label"></span>
-                <span id="title-annotation" class="vl-step__title__annotation"></span>
+              <h3 class="vl-step__title">
+                <span id="title"></span>
+                <span>
+                  <span id="title-label"></span>
+                </span>
+                <span class="vl-step__title__annotation vl-u-visually-hidden">
+                  <span id="title-annotation"></span>
+                </span>
               </h3>
-              <p id="sub-title" class="vl-step__subtitle"></p>
+              <p class="vl-step__subtitle">
+                <span id="sub-title"></span>
+              </p>
             </div>
           </div>
           <div class="vl-step__content-wrapper">
-            <p id="content" class="vl-step__content"></p>
+            <p id="content" class="vl-step__content">
+              <slot></slot>
+            </p>
           </div>
-        </div>
-      </li>
-    `);
+        </div>`));
     this._processSlots();
   }
 
@@ -67,39 +81,39 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   get _iconElement() {
-    return this._shadow.querySelector('#icon');
+    return this.querySelector('#icon');
   }
 
   get _subIconElement() {
-    return this._iconElement.querySelector('#sub-icon');
+    return this.querySelector('#sub-icon');
   }
 
   get _wrapperElement() {
-    return this._shadow.querySelector('.vl-step__wrapper');
+    return this.querySelector('.vl-step__wrapper');
   }
 
   get _headerElement() {
-    return this._wrapperElement.querySelector('.vl-step__header');
+    return this.querySelector('.vl-step__wrapper > .vl-step__header');
   }
 
   get _titleElement() {
-    return this._headerElement.querySelector('#title');
+    return this.querySelector('#title');
   }
 
   get _titleLabelElement() {
-    return this._headerElement.querySelector('#title-label');
+    return this.querySelector('#title-label');
   }
 
   get _titleAnnotationElement() {
-    return this._headerElement.querySelector('#title-annotation');
+    return this.querySelector('#title-annotation');
   }
 
   get _subTitleElement() {
-    return this._headerElement.querySelector('#sub-title');
+    return this.querySelector('#sub-title');
   }
 
   get _contentElement() {
-    return this._shadow.querySelector('#content');
+    return this.querySelector('#content');
   }
 
   get _classPrefix() {
@@ -111,11 +125,16 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   _getToggleableHeaderHTML() {
+    const title = this.getAttribute('data-vl-title') || '';
+    const titleLabel = this.getAttribute('data-vl-title-label') || '';
     return `
       <button class="vl-step__header js-vl-accordion__toggle">
         <div class="vl-step__header__titles">
-          <h3 id="title" class="vl-step__title">
-            <span id="title-label"></span>
+          <h3 class="vl-step__title">
+            <span id="title">${title}</span>
+            <span>
+              <span id="title-label">${titleLabel}</span>
+           </span>
           </h3>
         </div>
         <div class="vl-step__header__info" aria-hidden="true">
@@ -128,6 +147,40 @@ export class VlStep extends vlElement(HTMLElement) {
   _typeChangedCallback(oldValue, newValue) {
     this._changeClass(this._element, oldValue, newValue, this._classPrefix);
   }
+  _identifierChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._iconElement.innerText = newValue;
+    }
+  }
+  _identifierAnnotationChangedCallback(oldValue, newValue) {
+    console.log('test');
+    console.log(newValue);
+    if (newValue) {
+      this._subIconElement.innerText = newValue;
+    }
+  }
+  _titleChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._titleElement.innerText = newValue;
+    }
+  }
+  _titleLabelChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._titleLabelElement.innerText = newValue;
+    }
+  }
+  _subTitleChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._subTitleElement.innerText = newValue;
+    }
+  }
+
+  _titleAnnotationChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._titleAnnotationElement.innerText = newValue;
+      this._titleAnnotationElement.classList.remove('vl-u-visually-hidden');
+    }
+  }
 
   _toggleableChangedCallback(oldValue, newValue) {
     if (newValue != undefined) {
@@ -135,29 +188,30 @@ export class VlStep extends vlElement(HTMLElement) {
       this._element.classList.add('js-vl-accordion');
       this._headerElement.remove();
       this._wrapperElement.insertAdjacentHTML('afterbegin', this._getToggleableHeaderHTML());
-      this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-      this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
+      // this.setAttribute('data-vl-title', this.getAttribute('data-vl-title'));
+      // this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
+      // this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     }
   }
 
   _processSlots() {
-    this.__processSlot(this.querySelector('[slot="identifier"]'), (slot) => this._iconElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="identifier-annotation"]'), (slot) => this._subIconElement.append(slot));
-    this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
-    this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
+    // this.__processSlot(this.querySelector('[slot="identifier"]'), (slot) => this._iconElement.prepend(slot));
+    // this.__processSlot(this.querySelector('[slot="identifier-annotation"]'), (slot) => this._subIconElement.append(slot));
+    // this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
+    // this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
+    // this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
+    // this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
     this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
   }
 
   __processSlot(slot, success, error) {
     if (slot && success) {
-      success(slot.cloneNode(true));
+      success(slot);
     } else if (error) {
       error();
     }
   }
 }
 
-define('vl-step', VlStep);
+define('vl-step', VlStep, {extends: 'li'});
 
