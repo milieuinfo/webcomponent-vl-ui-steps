@@ -52,12 +52,11 @@ export class VlSteps extends vlElement(HTMLElement) {
     customElements.whenDefined('vl-step').then(() => {
       customElements.whenDefined('vl-duration-step').then(() => {
         this._stepsElement.innerHTML = ``;
-        this.querySelectorAll('vl-step, vl-duration-step').forEach((item) => {
-          this._stepsElement.append(item.template);
+        this.querySelectorAll('vl-step, vl-duration-step').forEach((item, index) => {
+          this._stepsElement.append(item.template(index));
           const contentSlot = item.querySelector(`[slot="content"]`);
           if (contentSlot) {
-            contentSlot.setAttribute('slot',
-                `${item.getAttribute('data-vl-identifier')}-content`);
+            contentSlot.setAttribute('slot', `content-${index}`);
             this.append(contentSlot);
           }
         });
