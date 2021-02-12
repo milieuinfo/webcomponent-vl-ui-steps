@@ -66,6 +66,7 @@ export class VlStep extends vlElement(HTMLElement) {
 
   /**
    * Geeft de step template.
+   * @param {Number} index - position of element in parent element
    * @return {HTMLElement}
    */
   template(index) {
