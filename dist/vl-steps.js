@@ -1,4 +1,6 @@
 import {vlElement, define} from '/node_modules/vl-ui-core/dist/vl-core.js';
+import {VlStep} from '/node_modules/vl-ui-steps/dist/vl-step.js';
+import {VlDurationStep} from '/node_modules/vl-ui-steps/dist/vl-duration-step.js';
 import '/node_modules/vl-ui-steps/dist/vl-step.js';
 import '/node_modules/vl-ui-steps/dist/vl-duration-step.js';
 
@@ -31,8 +33,18 @@ export class VlSteps extends vlElement(HTMLElement) {
   }
 
   connectedCallback() {
-    // this._observer = this.__observeChildElements(() => this._processSteps());
+    this._observer = this.__observeChildElements(this.__processStepsIfNecessary());
     this._processSteps();
+  }
+
+  __processStepsIfNecessary() {
+    return (mutations) => {
+      if (mutations.flatMap((mutation) => [...mutation.removedNodes, ...mutation.addedNodes])
+          .filter((node) =>
+            node instanceof VlStep || node instanceof VlDurationStep)) {
+        this._processSteps();
+      }
+    };
   }
 
   disconnectedCallback() {
@@ -56,7 +68,8 @@ export class VlSteps extends vlElement(HTMLElement) {
           const contentSlot = item.querySelector(`[slot="content"]`);
           if (contentSlot) {
             contentSlot.setAttribute('slot', `content-${index}`);
-            this.append(contentSlot);
+            this.append(contentSlot.cloneNode(true));
+            contentSlot.setAttribute('hidden', '');
           }
         });
       });

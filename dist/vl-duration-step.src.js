@@ -22,18 +22,10 @@ export class VlDurationStep extends vlElement(HTMLElement) {
     `);
   }
 
-  connectedCallback() {
-    this._processSlots();
-  }
-
   template(index) {
     const template = this._element.cloneNode(true);
     template.querySelector('slot[name="content"]').name = `content-${index}`;
     return template;
-  }
-
-  _processSlots() {
-    [...this.childNodes].forEach((child) => this._element.append(child.cloneNode(true)));
   }
 }
 

@@ -66,6 +66,7 @@ export class VlStep extends vlElement(HTMLElement) {
 
   /**
    * Geeft de step template.
+   * @param {Number} index - position of element in parent element
    * @return {HTMLElement}
    */
   template(index) {
@@ -183,7 +184,7 @@ export class VlStep extends vlElement(HTMLElement) {
   _titleAnnotationChangedCallback(oldValue, newValue) {
     if (newValue) {
       this._titleAnnotationElement.innerText = newValue;
-      this._titleAnnotationElement.classList.remove('vl-u-visually-hidden');
+      this._titleAnnotationElement.parentNode.classList.remove('vl-u-visually-hidden');
     }
   }
 }
