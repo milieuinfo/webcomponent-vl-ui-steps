@@ -30,3 +30,7 @@
         }
     }
 }
+
+.vl-step__content ::slotted(p + p) {
+    margin-top: 1rem
+}

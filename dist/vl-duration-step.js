@@ -16,7 +16,9 @@ import {vlElement, define} from '/node_modules/vl-ui-core/dist/vl-core.js';
 export class VlDurationStep extends vlElement(HTMLElement) {
   constructor() {
     super(`
-      <li class="vl-duration-step"></li>
+      <li class="vl-duration-step">
+        <slot name="content"></slot>
+      </li>
     `);
   }
 
@@ -24,8 +26,10 @@ export class VlDurationStep extends vlElement(HTMLElement) {
     this._processSlots();
   }
 
-  get template() {
-    return this._element.cloneNode(true);
+  template(index) {
+    const template = this._element.cloneNode(true);
+    template.querySelector('slot[name="content"]').name = `content-${index}`;
+    return template;
   }
 
   _processSlots() {

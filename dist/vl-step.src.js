@@ -62,15 +62,15 @@ export class VlStep extends vlElement(HTMLElement) {
         </div>
       </li>
     `);
-    // this._processSlots();
   }
 
   /**
    * Geeft de step template.
    * @return {HTMLElement}
    */
-  get template() {
+  template(index) {
     const template = this._element.cloneNode(true);
+    template.querySelector('slot[name="content"]').name = `content-${index}`;
     if (this._isToggleable) {
       vl.accordion.dress(template);
       template.querySelector('#content').addEventListener('click', (e) => e.stopPropagation());
@@ -150,15 +150,12 @@ export class VlStep extends vlElement(HTMLElement) {
       this._element.classList.add('js-vl-accordion');
       this._headerElement.remove();
       this._wrapperElement.insertAdjacentHTML('afterbegin', this._getToggleableHeaderHTML());
-      // this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-      // this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     }
   }
 
   _identifierChangedCallback(oldValue, newValue) {
     if (newValue) {
       this._iconElement.innerText = newValue;
-      this._contentElement.querySelector('slot').name = newValue + '-content';
     }
   }
 
