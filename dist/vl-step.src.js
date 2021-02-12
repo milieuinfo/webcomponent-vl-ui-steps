@@ -58,13 +58,25 @@ export class VlStep extends nativeVlElement(HTMLLIElement) {
               </p>
             </div>
           </div>
-          <div class="vl-step__content-wrapper">
-            <p id="content" class="vl-step__content">
-              <slot></slot>
-            </p>
-          </div>
         </div>`));
-    this._processSlots();
+    this._processContent();
+  }
+
+  __contentTemplate() {
+    return this._template(`
+        <div class="vl-step__content-wrapper">
+          <p id="content" class="vl-step__content">
+          </p>
+        </div>`);
+  }
+
+  _processContent() {
+    const content = this.querySelector('[data-vl-content]');
+    if (content) {
+      const contentTemplate = this.__contentTemplate().firstElementChild;
+      contentTemplate.querySelector('#content').appendChild(content);
+      this._wrapperElement.appendChild(contentTemplate);
+    }
   }
 
   /**
@@ -201,7 +213,7 @@ export class VlStep extends nativeVlElement(HTMLLIElement) {
     // this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     // this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
     // this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
-    this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
+    // this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
   }
 
   __processSlot(slot, success, error) {
