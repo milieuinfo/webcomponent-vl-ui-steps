@@ -16,75 +16,60 @@
     <vl-demo-page data-vl-webcomponent="vl-steps" data-vl-link="https://overheid.vlaanderen.be/webuniversum/v3/documentation/components/vl-ui-steps">
         <vl-demo data-vl-title="Steps">
             <vl-steps id="vl-steps-1">
-                <vl-step>
-                    <span slot="identifier">2</span>
-                    <span slot="title">Step 2: Second action</span>
-                    <span slot="sub-title">This is a subtitle.</span>
+                <vl-step data-vl-identifier="2"
+                         data-vl-title="Step 2: Second action"
+                         data-vl-sub-title="This is a subtitle.">
                 </vl-step>
-                <vl-step disabled>
-                    <span slot="identifier">3</span>
-                    <span slot="title">Step 3: Third action</span>
-                    <span slot="sub-title">This is a subtitle.</span>
+                <vl-step data-vl-identifier="3"
+                         data-vl-title="Step 3: Third action"
+                         data-vl-sub-title="This is a subtitle." disabled>
                 </vl-step>
-                <vl-step type="success">
-                    <span slot="identifier">4</span>
-                    <span slot="title">Step 4: Fourth action</span>
-                    <span slot="sub-title">This is a subtitle.</span>
+                <vl-step data-vl-identifier="4"
+                         data-vl-title="Step 4: Fourth action"
+                         data-vl-sub-title="This is a subtitle." type="success">
                 </vl-step>
-                <vl-step type="warning">
-                    <span slot="identifier">5</span>
-                    <span slot="title">Step 5: Fifth action</span>
-                    <span slot="sub-title">This is a subtitle.</span>
+                <vl-step data-vl-identifier="5"
+                         data-vl-title="Step 5: Fifth action"
+                         data-vl-sub-title="This is a subtitle." type="warning">
                 </vl-step>
-                <vl-step type="error">
-                    <span slot="identifier">6</span>
-                    <span slot="title">Step 6: sixth action</span>
-                    <span slot="sub-title">This is a subtitle.</span>
+                <vl-step data-vl-identifier="6"
+                         data-vl-title="Step 6: Sixth action"
+                         data-vl-sub-title="This is a subtitle." type="error">
                 </vl-step>
             </vl-steps>
         </vl-demo>
 
         <vl-demo data-vl-title="Steps">
             <vl-steps id="vl-steps-2">
-                <vl-step data-vl-disabled>
-                    <span slot="identifier">0</span>
-                    <span slot="title">Six centuries ago</span>
-                    <span slot="sub-title">The last visitor from earth entered my world.</span>
+                <vl-step data-vl-disabled
+                         data-vl-identifier="0"
+                         data-vl-title="Six centuries ago"
+                         data-vl-sub-title="The last visitor from earth entered my world.">
                     <span slot="content">
                         Now, it's your turn to feel that pain. The gates are open.
                     </span>
                 </vl-step>
-                <vl-step data-vl-toggleable>
-                    <span slot="identifier">1</span>
-                    <span slot="title">Gate 1</span>
+                <vl-step data-vl-toggleable data-vl-identifier="1" data-vl-title="Gate 1">
                     <span slot="content">
                         Darkness, the world of demons. Look around you, they're everywhere.
                     </span>
                 </vl-step>
-                <vl-step data-vl-toggleable>
-                    <span slot="identifier">2</span>
-                    <span slot="title">Gate 2</span>
+                <vl-step data-vl-toggleable data-vl-identifier="2" data-vl-title="Gate 2">
                     <span slot="content">
                         My guards are watching you.
                     </span>
                 </vl-step>
-                <vl-step data-vl-toggleable>
-                    <span slot="identifier">3</span>
-                    <span slot="title">Gate 3</span>
+                <vl-step data-vl-toggleable data-vl-identifier="3" data-vl-title="Gate 3">
                     <span slot="content">
                         Only evil lives here.
                     </span>
                 </vl-step>
-                <vl-step data-vl-toggleable>
-                    <span slot="identifier">4</span>
-                    <span slot="title">Gate 4</span>
+                <vl-step data-vl-toggleable data-vl-identifier="4" data-vl-title="Gate 4">
                     <span slot="content">
                         There's no way out.
                     </span>
                 </vl-step>
-                <vl-step data-vl-toggleable>
-                    <span slot="identifier">5</span>
-                    <span slot="title">Gate 5</span>
+                <vl-step data-vl-toggleable data-vl-identifier="5" data-vl-title="Gate 5">
                     <span slot="content">
                         Feel the fire.
                     </span>

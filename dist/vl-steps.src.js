@@ -32,7 +32,7 @@ export class VlSteps extends vlElement(HTMLElement) {
   }
 
   connectedCallback() {
-    this._observer = this.__observeChildElements(() => this._processSteps());
+    // this._observer = this.__observeChildElements(() => this._processSteps());
     this._processSteps();
   }
 
@@ -52,7 +52,15 @@ export class VlSteps extends vlElement(HTMLElement) {
     customElements.whenDefined('vl-step').then(() => {
       customElements.whenDefined('vl-duration-step').then(() => {
         this._stepsElement.innerHTML = ``;
-        this.querySelectorAll('vl-step, vl-duration-step').forEach((item) => this._stepsElement.append(item.template));
+        this.querySelectorAll('vl-step, vl-duration-step').forEach((item) => {
+          this._stepsElement.append(item.template);
+          const contentSlot = item.querySelector(`[slot="content"]`);
+          if (contentSlot) {
+            contentSlot.setAttribute('slot',
+                `${item.getAttribute('data-vl-identifier')}-content`);
+            this.append(contentSlot);
+          }
+        });
       });
     });
   }

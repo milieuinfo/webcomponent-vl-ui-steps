@@ -21,7 +21,7 @@ import '@govflanders/vl-ui-accordion/dist/js/accordion.js';
  */
 export class VlStep extends vlElement(HTMLElement) {
   static get _observedAttributes() {
-    return ['type', 'toggleable'];
+    return ['type', 'toggleable', 'identifier', 'identifier-annotation', 'title', 'title-label', 'sub-title', 'title-annotation'];
   }
 
   static get _observedChildClassAttributes() {
@@ -31,26 +31,38 @@ export class VlStep extends vlElement(HTMLElement) {
   constructor() {
     super(`
       <li class="vl-step">
-        <div id="icon" class="vl-step__icon">
-          <span id="sub-icon" class="vl-step__icon__sub"></span>
+        <div class="vl-step__icon">
+          <span id="icon"></span>
+          <span class="vl-step__icon__sub">
+            <span id="sub-icon"></span>
+          </span>
         </div>
         <div class="vl-step__wrapper">
           <div class="vl-step__header">
             <div class="vl-step__header__titles">
-              <h3 id="title" class="vl-step__title">
-                <span id="title-label"></span>
-                <span id="title-annotation" class="vl-step__title__annotation"></span>
+              <h3 class="vl-step__title">
+                <span id="title"></span>
+                <span>
+                  <span id="title-label"></span>
+                </span>
+                <span class="vl-step__title__annotation vl-u-visually-hidden">
+                  <span id="title-annotation"></span>
+                </span>
               </h3>
-              <p id="sub-title" class="vl-step__subtitle"></p>
+              <p class="vl-step__subtitle">
+                <span id="sub-title"></span>
+              </p>
             </div>
           </div>
           <div class="vl-step__content-wrapper">
-            <p id="content" class="vl-step__content"></p>
+            <p id="content" class="vl-step__content">
+              <slot name="content"></slot>
+            </p>
           </div>
         </div>
       </li>
     `);
-    this._processSlots();
+    // this._processSlots();
   }
 
   /**
@@ -114,8 +126,11 @@ export class VlStep extends vlElement(HTMLElement) {
     return `
       <button class="vl-step__header js-vl-accordion__toggle">
         <div class="vl-step__header__titles">
-          <h3 id="title" class="vl-step__title">
-            <span id="title-label"></span>
+          <h3 class="vl-step__title">
+            <span id="title"></span>
+            <span>
+              <span id="title-label"></span>
+            </span>
           </h3>
         </div>
         <div class="vl-step__header__info" aria-hidden="true">
@@ -135,26 +150,43 @@ export class VlStep extends vlElement(HTMLElement) {
       this._element.classList.add('js-vl-accordion');
       this._headerElement.remove();
       this._wrapperElement.insertAdjacentHTML('afterbegin', this._getToggleableHeaderHTML());
-      this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-      this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
+      // this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
+      // this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
     }
   }
 
-  _processSlots() {
-    this.__processSlot(this.querySelector('[slot="identifier"]'), (slot) => this._iconElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="identifier-annotation"]'), (slot) => this._subIconElement.append(slot));
-    this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
-    this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
-    this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
+  _identifierChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._iconElement.innerText = newValue;
+      this._contentElement.querySelector('slot').name = newValue + '-content';
+    }
   }
 
-  __processSlot(slot, success, error) {
-    if (slot && success) {
-      success(slot.cloneNode(true));
-    } else if (error) {
-      error();
+  _identifierAnnotationChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._subIconElement.innerText = newValue;
+    }
+  }
+  _titleChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._titleElement.innerText = newValue;
+    }
+  }
+  _titleLabelChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._titleLabelElement.innerText = newValue;
+    }
+  }
+  _subTitleChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._subTitleElement.innerText = newValue;
+    }
+  }
+
+  _titleAnnotationChangedCallback(oldValue, newValue) {
+    if (newValue) {
+      this._titleAnnotationElement.innerText = newValue;
+      this._titleAnnotationElement.classList.remove('vl-u-visually-hidden');
     }
   }
 }
