@@ -83,7 +83,7 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   get _subIconElement() {
-    return this._iconElement.querySelector('#sub-icon');
+    return this._shadow.querySelector('#sub-icon');
   }
 
   get _wrapperElement() {
@@ -95,19 +95,19 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   get _titleElement() {
-    return this._headerElement.querySelector('#title');
+    return this._shadow.querySelector('#title');
   }
 
   get _titleLabelElement() {
-    return this._headerElement.querySelector('#title-label');
+    return this._shadow.querySelector('#title-label');
   }
 
   get _titleAnnotationElement() {
-    return this._headerElement.querySelector('#title-annotation');
+    return this._shadow.querySelector('#title-annotation');
   }
 
   get _subTitleElement() {
-    return this._headerElement.querySelector('#sub-title');
+    return this._shadow.querySelector('#sub-title');
   }
 
   get _contentElement() {
