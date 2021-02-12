@@ -40,7 +40,7 @@ export class VlSteps extends vlElement(HTMLElement) {
   __processStepsIfNecessary() {
     return (mutations) => {
       if (mutations.flatMap((mutation) => [...mutation.removedNodes, ...mutation.addedNodes])
-        .filter((node) =>
+          .filter((node) =>
             node instanceof VlStep || node instanceof VlDurationStep)) {
         this._processSteps();
       }
@@ -69,7 +69,7 @@ export class VlSteps extends vlElement(HTMLElement) {
           if (contentSlot) {
             contentSlot.setAttribute('slot', `content-${index}`);
             this.append(contentSlot.cloneNode(true));
-            contentSlot.setAttribute('hidden', '')
+            contentSlot.setAttribute('hidden', '');
           }
         });
       });
