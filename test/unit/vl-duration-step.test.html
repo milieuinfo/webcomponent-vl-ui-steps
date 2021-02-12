@@ -1,34 +1,34 @@
-<!doctype html>
-<html>
+<!--<!doctype html>-->
+<!--<html>-->
 
-<head>
-  <meta charset="utf-8">
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
-  <script src="../../../web-component-tester/browser.js"></script>
+<!--<head>-->
+<!--  <meta charset="utf-8">-->
+<!--  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>-->
+<!--  <script src="../../../web-component-tester/browser.js"></script>-->
 
-  <script type="module" src="../../src/vl-duration-step.js"></script>
-</head>
+<!--  <script type="module" src="../../src/vl-duration-step.js"></script>-->
+<!--</head>-->
 
-<body>
-  <test-fixture id="vl-duration-step-fixture">
-    <template>
-      <vl-duration-step>
-        <span>test 1</span>
-        <span>test 2</span>
-      </vl-duration-step>
-    </template>
-  </test-fixture>
+<!--<body>-->
+<!--  <test-fixture id="vl-duration-step-fixture">-->
+<!--    <template>-->
+<!--      <vl-duration-step>-->
+<!--        <span>test 1</span>-->
+<!--        <span>test 2</span>-->
+<!--      </vl-duration-step>-->
+<!--    </template>-->
+<!--  </test-fixture>-->
 
-  <script>
-    suite('vl-duration-step', () => {
-      test('zal de child elementen toevoegen aan het step duration element', () => {
-        const stepDuration = fixture('vl-duration-step-fixture');
-        [...stepDuration._element.children].forEach((child, index) => {
-          assert.isTrue(child.isEqualNode(stepDuration.children[index]));
-        });
-      });
-    });
-  </script>
-</body>
+<!--  <script>-->
+<!--    suite('vl-duration-step', () => {-->
+<!--      test('zal de child elementen toevoegen aan het step duration element', () => {-->
+<!--        const stepDuration = fixture('vl-duration-step-fixture');-->
+<!--        [...stepDuration._element.children].forEach((child, index) => {-->
+<!--          assert.isTrue(child.isEqualNode(stepDuration.children[index]));-->
+<!--        });-->
+<!--      });-->
+<!--    });-->
+<!--  </script>-->
+<!--</body>-->
 
-</html>
+<!--</html>-->
