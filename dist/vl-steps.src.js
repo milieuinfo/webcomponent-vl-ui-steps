@@ -82,8 +82,8 @@ export class VlSteps extends vlElement(HTMLElement) {
    * This method copies the content slot and hides the original. This is to
    * let the slot have the correct name, so it's shown in the correct step when
    * placed in the shadow dom.
-   * @param contentSlot
-   * @param index
+   * @param {Node} contentSlot - De originele content slot
+   * @param {number} index - De index van de content slot in de steps.
    * @private
    */
   __copyContentSlotWithCorrectNameAndHide(contentSlot, index) {
@@ -94,7 +94,7 @@ export class VlSteps extends vlElement(HTMLElement) {
   }
 
   __removeAllCopiedSlots() {
-    this.querySelectorAll(`[slot^="content-"]`).forEach(slot => slot.remove());
+    this.querySelectorAll(`[slot^="content-"]`).forEach((slot) => slot.remove());
   }
 
   __observeChildElements(callback) {
