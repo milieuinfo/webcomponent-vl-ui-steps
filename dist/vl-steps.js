@@ -63,18 +63,37 @@ export class VlSteps extends vlElement(HTMLElement) {
     customElements.whenDefined('vl-step').then(() => {
       customElements.whenDefined('vl-duration-step').then(() => {
         this._stepsElement.innerHTML = ``;
+        this.__removeAllCopiedSlots();
         this.querySelectorAll('vl-step, vl-duration-step').forEach((item, index) => {
           this._stepsElement.append(item.template(index));
           const contentSlot = item.querySelector(`[slot="content"]`);
+          // unhide slot if already once processed.
+          contentSlot.removeAttribute('hidden');
           if (contentSlot) {
-            const contentSlotCopy = contentSlot.cloneNode(true);
-            contentSlotCopy.setAttribute('slot', `content-${index}`);
-            this.append(contentSlotCopy);
-            contentSlot.setAttribute('hidden', '');
+            this.__copyContentSlotWithCorrectNameAndHide(contentSlot, index);
           }
         });
       });
     });
+  }
+
+  /**
+   * This method copies the content slot and hides the original. This is to
+   * let the slot have the correct name, so it's shown in the correct step when
+   * placed in the shadow dom.
+   * @param contentSlot
+   * @param index
+   * @private
+   */
+  __copyContentSlotWithCorrectNameAndHide(contentSlot, index) {
+    const contentSlotCopy = contentSlot.cloneNode(true);
+    contentSlotCopy.setAttribute('slot', `content-${index}`);
+    this.append(contentSlotCopy);
+    contentSlot.setAttribute('hidden', '');
+  }
+
+  __removeAllCopiedSlots() {
+    this.querySelectorAll(`[slot^="content-"]`).forEach(slot => slot.remove());
   }
 
   __observeChildElements(callback) {
