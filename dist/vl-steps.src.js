@@ -67,9 +67,10 @@ export class VlSteps extends vlElement(HTMLElement) {
         this.querySelectorAll('vl-step, vl-duration-step').forEach((item, index) => {
           this._stepsElement.append(item.template(index));
           const contentSlot = item.querySelector(`[slot="content"]`);
+          const contentSlotCopy = contentSlot.cloneNode(true);
           if (contentSlot) {
-            contentSlot.setAttribute('slot', `content-${index}`);
-            this.append(contentSlot.cloneNode(true));
+            contentSlotCopy.setAttribute('slot', `content-${index}`);
+            this.append(contentSlotCopy);
             contentSlot.setAttribute('hidden', '');
           }
         });

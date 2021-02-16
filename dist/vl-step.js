@@ -42,7 +42,7 @@ export class VlStep extends vlElement(HTMLElement) {
             <div class="vl-step__header__titles">
               <h3 class="vl-step__title">
                 <span id="title"></span>
-                <span>
+                <span class="vl-u-visually-hidden">
                   <span id="title-label"></span>
                 </span>
                 <span class="vl-step__title__annotation vl-u-visually-hidden">
@@ -173,6 +173,7 @@ export class VlStep extends vlElement(HTMLElement) {
   _titleLabelChangedCallback(oldValue, newValue) {
     if (newValue) {
       this._titleLabelElement.innerText = newValue;
+      this._titleLabelElement.parentNode.classList.remove('vl-u-visually-hidden');
     }
   }
   _subTitleChangedCallback(oldValue, newValue) {
