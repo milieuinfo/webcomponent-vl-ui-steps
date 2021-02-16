@@ -123,16 +123,22 @@ export class VlStep extends vlElement(HTMLElement) {
     return this.hasAttribute('toggleable');
   }
 
-  _getToggleableHeaderHTML() {
+  _getToggleableHeaderHTML(title, titleLabel, titleAnnotation, subTitle) {
     return `
       <button class="vl-step__header js-vl-accordion__toggle">
         <div class="vl-step__header__titles">
           <h3 class="vl-step__title">
-            <span id="title"></span>
-            <span>
-              <span id="title-label"></span>
+            <span id="title">${title}</span>
+            <span class="${titleLabel ? '' : 'vl-u-visually-hidden'}">
+              <span id="title-label">${titleLabel}</span>
+            </span>
+            <span class="${titleAnnotation ? 'vl-step__title__annotation' : 'vl-step__title__annotation vl-u-visually-hidden'}">
+              <span id="title-annotation">${titleAnnotation}</span>
             </span>
           </h3>
+          <p class="vl-step__subtitle">
+            <span id="sub-title">${subTitle}</span>
+          </p>
         </div>
         <div class="vl-step__header__info" aria-hidden="true">
           <em class="vl-step__accordion-toggle"></em>
@@ -149,8 +155,24 @@ export class VlStep extends vlElement(HTMLElement) {
     if (newValue != undefined) {
       this._element.classList.add('vl-step--accordion');
       this._element.classList.add('js-vl-accordion');
+      let title = '';
+      if (this._titleElement) {
+        title = this._titleElement.innerText;
+      }
+      let titleLabel = '';
+      if (this._titleLabelElement) {
+        titleLabel = this._titleLabelElement.innerText;
+      }
+      let titleAnnotation = '';
+      if (this._titleAnnotationElement) {
+        titleAnnotation = this._titleAnnotationElement.innerText;
+      }
+      let subTitle = '';
+      if (this._subTitleElement) {
+        subTitle = this._subTitleElement.innerText;
+      }
       this._headerElement.remove();
-      this._wrapperElement.insertAdjacentHTML('afterbegin', this._getToggleableHeaderHTML());
+      this._wrapperElement.insertAdjacentHTML('afterbegin', this._getToggleableHeaderHTML(title, titleLabel, titleAnnotation, subTitle));
     }
   }
 

@@ -41,7 +41,7 @@ export class VlSteps extends vlElement(HTMLElement) {
     return (mutations) => {
       if (mutations.flatMap((mutation) => [...mutation.removedNodes, ...mutation.addedNodes])
           .filter((node) =>
-            node instanceof VlStep || node instanceof VlDurationStep)) {
+            node instanceof VlStep || node instanceof VlDurationStep).length > 0) {
         this._processSteps();
       }
     };
@@ -66,8 +66,8 @@ export class VlSteps extends vlElement(HTMLElement) {
         this.querySelectorAll('vl-step, vl-duration-step').forEach((item, index) => {
           this._stepsElement.append(item.template(index));
           const contentSlot = item.querySelector(`[slot="content"]`);
-          const contentSlotCopy = contentSlot.cloneNode(true);
           if (contentSlot) {
+            const contentSlotCopy = contentSlot.cloneNode(true);
             contentSlotCopy.setAttribute('slot', `content-${index}`);
             this.append(contentSlotCopy);
             contentSlot.setAttribute('hidden', '');
