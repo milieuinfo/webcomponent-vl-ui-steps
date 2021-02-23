@@ -153,13 +153,13 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   _reprocessSlots() {
-    this._setMutationContent("identifier", (slot) => this._iconElement.prepend(slot));
-    this._setMutationContent("identifier-annotation", (slot) => this._subIconElement.append(slot));
-    this._setMutationContent("title", (slot) => this._titleElement.prepend(slot));
-    this._setMutationContent("title-label", (slot) => this._titleLabelElement.prepend(slot), () => this._titleLabelElement.classList.add('vl-u-visually-hidden'));
-    this._setMutationContent("title-annotation", (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
-    this._setMutationContent("sub-title", (slot) => this._subTitleElement.append(slot));
-    this._setMutationContent("content", (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
+    this._setMutationContent('identifier', (slot) => this._iconElement.prepend(slot));
+    this._setMutationContent('identifier-annotation', (slot) => this._subIconElement.append(slot));
+    this._setMutationContent('title', (slot) => this._titleElement.prepend(slot));
+    this._setMutationContent('title-label', (slot) => this._titleLabelElement.prepend(slot), () => this._titleLabelElement.classList.add('vl-u-visually-hidden'));
+    this._setMutationContent('title-annotation', (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
+    this._setMutationContent('sub-title', (slot) => this._subTitleElement.append(slot));
+    this._setMutationContent('content', (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
   }
 
   _setMutationContent(label, createSlot, removeSlot = () => {
@@ -181,7 +181,7 @@ export class VlStep extends vlElement(HTMLElement) {
   }
 
   __removeSlotAfterMutation(label, removeSlot) {
-    let slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
+    const slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
     if (slotInShadow) {
       slotInShadow.remove();
       removeSlot();

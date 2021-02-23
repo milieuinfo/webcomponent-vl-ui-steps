@@ -127,42 +127,42 @@
             assert.isNull(steps._shadow.querySelector('#content [slot="content"]'));
 
             done();
-          })
+          });
         });
 
-      test('content en annotation worden hidden/niet-hidden bij verwijderen/toevoegen van children', () => {
-        const steps = fixture('vl-steps-with-data-fixture');
-        const step = steps.querySelector('vl-step');
+        test('content en annotation worden hidden/niet-hidden bij verwijderen/toevoegen van children', () => {
+          const steps = fixture('vl-steps-with-data-fixture');
+          const step = steps.querySelector('vl-step');
 
-        assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
-        assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
-        assert.isTrue(steps._shadow.querySelector('#content [slot="content"]').hidden);
+          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
+          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
+          assert.isTrue(steps._shadow.querySelector('#content [slot="content"]').hidden);
 
-        const titleAnnotation = document.createElement('span');
-        const content = document.createElement('span');
+          const titleAnnotation = document.createElement('span');
+          const content = document.createElement('span');
 
-        titleAnnotation.setAttribute('slot', 'title-annotation');
-        content.setAttribute('slot', 'content');
+          titleAnnotation.setAttribute('slot', 'title-annotation');
+          content.setAttribute('slot', 'content');
 
-        titleAnnotation.innerText = 'TitleAnnotation';
-        content.innerText = 'Content';
+          titleAnnotation.innerText = 'TitleAnnotation';
+          content.innerText = 'Content';
 
-        step.appendChild(titleAnnotation);
-        step.appendChild(content);
+          step.appendChild(titleAnnotation);
+          step.appendChild(content);
 
-        assert.isFalse(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
-        assert.isFalse(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
-        assert.isFalse(steps._shadow.querySelector('#content [slot="content"]').hidden);
+          assert.isFalse(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
+          assert.isFalse(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
+          assert.isFalse(steps._shadow.querySelector('#content [slot="content"]').hidden);
 
-        titleAnnotation.remove();
-        content.remove();
+          titleAnnotation.remove();
+          content.remove();
 
-        assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
-        assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
-        assert.isTrue(steps._shadow.querySelector('#content [slot="content"]').hidden);
+          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
+          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
+          assert.isTrue(steps._shadow.querySelector('#content [slot="content"]').hidden);
+        });
       });
     });
-  });
   </script>
 </body>
 
