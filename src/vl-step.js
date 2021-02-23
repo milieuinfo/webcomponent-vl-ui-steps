@@ -58,10 +58,12 @@ export class VlStep extends vlElement(HTMLElement) {
    * @return {HTMLElement}
    */
   get template() {
+    this._reprocessSlots();
     const template = this._element.cloneNode(true);
     if (this._isToggleable) {
       vl.accordion.dress(template);
-      template.querySelector('#content').addEventListener('click', (e) => e.stopPropagation());
+      template.querySelector('#content').addEventListener('click',
+          (e) => e.stopPropagation());
     }
     return template;
   }
@@ -144,10 +146,30 @@ export class VlStep extends vlElement(HTMLElement) {
     this.__processSlot(this.querySelector('[slot="identifier"]'), (slot) => this._iconElement.prepend(slot));
     this.__processSlot(this.querySelector('[slot="identifier-annotation"]'), (slot) => this._subIconElement.append(slot));
     this.__processSlot(this.querySelector('[slot="title"]'), (slot) => this._titleElement.prepend(slot));
-    this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot));
+    this.__processSlot(this.querySelector('[slot="title-label"]'), (slot) => this._titleLabelElement.prepend(slot), () => this._titleLabelElement.classList.add('vl-u-visually-hidden'));
     this.__processSlot(this.querySelector('[slot="title-annotation"]'), (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
     this.__processSlot(this.querySelector('[slot="sub-title"]'), (slot) => this._subTitleElement.append(slot));
     this.__processSlot(this.querySelector('[slot="content"]'), (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
+  }
+
+  _reprocessSlots() {
+    this._setMutationContent("identifier", (slot) => this._iconElement.prepend(slot));
+    this._setMutationContent("identifier-annotation", (slot) => this._subIconElement.append(slot));
+    this._setMutationContent("title", (slot) => this._titleElement.prepend(slot));
+    this._setMutationContent("title-label", (slot) => this._titleLabelElement.prepend(slot), () => this._titleLabelElement.classList.add('vl-u-visually-hidden'));
+    this._setMutationContent("title-annotation", (slot) => this._titleAnnotationElement.append(slot), () => this._titleAnnotationElement.hidden = true);
+    this._setMutationContent("sub-title", (slot) => this._subTitleElement.append(slot));
+    this._setMutationContent("content", (slot) => this._contentElement.append(slot), () => this._contentElement.hidden = true);
+  }
+
+  _setMutationContent(label, createSlot, removeSlot = () => {
+  }) {
+    const slot = this.querySelector(`[slot="${label}"]`);
+    if (slot) {
+      this.__addSlotAfterMutation(slot, label, createSlot);
+    } else {
+      this.__removeSlotAfterMutation(label, removeSlot);
+    }
   }
 
   __processSlot(slot, success, error) {
@@ -156,6 +178,29 @@ export class VlStep extends vlElement(HTMLElement) {
     } else if (error) {
       error();
     }
+  }
+
+  __removeSlotAfterMutation(label, removeSlot) {
+    let slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
+    if (slotInShadow) {
+      slotInShadow.remove();
+      removeSlot();
+    }
+  }
+
+  __addSlotAfterMutation(slot, label, createSlot) {
+    const slotCopy = slot.cloneNode(true);
+    let slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
+    if (!slotInShadow) {
+      createSlot(slotCopy);
+      slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
+    } else {
+      slotInShadow.innerHTML = slotCopy.innerHTML;
+    }
+    if (slotInShadow.parentNode.hidden) {
+      slotInShadow.parentNode.hidden = false;
+    }
+    slotInShadow.parentNode.classList.remove('vl-u-visually-hidden');
   }
 }
 
