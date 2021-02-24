@@ -23,11 +23,25 @@
     </template>
   </test-fixture>
 
-  <test-fixture id="vl-steps-with-data-fixture">
+  <test-fixture id="vl-steps-empty-step-fixture">
+    <template>
+      <vl-steps>
+        <vl-step></vl-step>
+      </vl-steps>
+    </template>
+  </test-fixture>
+
+  <test-fixture id="vl-steps-step-fixture">
     <template>
       <vl-steps>
         <vl-step>
-          <span slot="title">Not jibber jabber</span>
+          <span slot="identifier">identifier</span>
+          <span slot="identifier-annotation">identifier-annotation</span>
+          <span slot="title">title</span>
+          <span slot="title-label">title-label</span>
+          <span slot="title-annotation">title-annotation</span>
+          <span slot="sub-title">sub-title</span>
+          <span slot="content">content</span>
         </vl-step>
       </vl-steps>
     </template>
@@ -35,6 +49,8 @@
 
   <script>
     suite('vl-steps', () => {
+      const slots = ['identifier', 'identifier-annotation', 'title', 'title-label', 'title-annotation', 'sub-title', 'content'];
+
       test('krijgt de juiste class wanneer de step het timeline attribuut bevat', () => {
         const steps = fixture('vl-steps-fixture');
         const attribute = 'data-vl-timeline';
@@ -81,85 +97,67 @@
         });
       });
 
-      test('zal de child content aanpassen indien de slot content wordt aangepast', (done) => {
-        const steps = fixture('vl-steps-with-data-fixture');
+      test('zal de content aanpassen indien de slot content wordt aangepast', (done) => {
+        const steps = fixture('vl-steps-step-fixture');
         const step = steps.querySelector('vl-step');
-        const title = step.querySelector('[slot="title"]');
-        title.innerText = 'jibber jabber';
+        const text = 'text';
+        slots.forEach((identifier, index) => step.querySelector(`[slot="${identifier}"]`).innerText = `${text}-${index}`);
         setTimeout(() => {
-          assert.equal(steps._shadow.querySelector('#title [slot="title"]').innerText, 'jibber jabber');
+          const step = steps._stepsElement.children[0];
+          slots.forEach((identifier, index) => assert.equal(step.querySelector(`[slot="${identifier}"]`).innerText, `${text}-${index}`));
           done();
         });
       });
 
-      test('zal de child content aanpassen indien slot\'s worden toegevoegd of verwijderd', (done) => {
-        const steps = fixture('vl-steps-with-data-fixture');
+      test('zal de content aanpassen indien slot elementen worden toegevoegd of verwijderd', (done) => {
+        const steps = fixture('vl-steps-empty-step-fixture');
         const step = steps.querySelector('vl-step');
-
-        const titleAnnotation = document.createElement('span');
-        const subTitle = document.createElement('span');
-        const content = document.createElement('span');
-
-        titleAnnotation.setAttribute('slot', 'title-annotation');
-        subTitle.setAttribute('slot', 'sub-title');
-        content.setAttribute('slot', 'content');
-
-        titleAnnotation.innerText = 'TitleAnnotation';
-        subTitle.innerText = 'Subtitle';
-        content.innerText = 'Content';
-
-        step.appendChild(titleAnnotation);
-        step.appendChild(subTitle);
-        step.appendChild(content);
+        const text = 'text';
+        slots.forEach((identifier, index) => {
+          const element = document.createElement('span');
+          element.setAttribute('slot', identifier);
+          element.innerText = `${text}-${index}`;
+          step.appendChild(element);
+        });
 
         setTimeout(() => {
-          assert.equal(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').innerText, 'TitleAnnotation');
-          assert.equal(steps._shadow.querySelector('#sub-title [slot="sub-title"]').innerText, 'Subtitle');
-          assert.equal(steps._shadow.querySelector('#content [slot="content"]').innerText, 'Content');
-
-          step.querySelector('[slot="title-annotation"]').remove();
-          step.querySelector('[slot="sub-title"]').remove();
-          step.querySelector('[slot="content"]').remove();
+          let element = steps._stepsElement.children[0];
+          slots.forEach((identifier, index) => assert.equal(element.querySelector(`[slot="${identifier}"]`).innerText, `${text}-${index}`));
+          slots.forEach((identifier) => step.querySelector(`[slot="${identifier}"]`).remove());
 
           setTimeout(() => {
-            assert.isNull(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]'));
-            assert.isNull(steps._shadow.querySelector('#sub-title [slot="sub-title"]'));
-            assert.isNull(steps._shadow.querySelector('#content [slot="content"]'));
-
+            element = steps._stepsElement.children[0];
+            slots.forEach((identifier) => assert.equal(element.querySelector(`[slot="${identifier}"]`).textContent, ''));
             done();
           });
         });
+      });
 
-        test('content en annotation worden hidden/niet-hidden bij verwijderen/toevoegen van children', () => {
-          const steps = fixture('vl-steps-with-data-fixture');
-          const step = steps.querySelector('vl-step');
+      test('slot inhoud wordt al dan niet verborgen bij verwijderen of toevoegen', (done) => {
+        const steps = fixture('vl-steps-empty-step-fixture');
+        const step = steps.querySelector('vl-step');
 
-          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
-          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
-          assert.isTrue(steps._shadow.querySelector('#content [slot="content"]').hidden);
+        setTimeout(() => {
+          let element = steps._stepsElement.children[0];
+          slots.forEach((identifier) => assert.isTrue(element.querySelector(`[slot="${identifier}"]`).parentElement.hidden));
+    
+          slots.forEach((identifier, index) => {
+            const element = document.createElement('span');
+            element.setAttribute('slot', identifier);
+            step.appendChild(element);
+          });
 
-          const titleAnnotation = document.createElement('span');
-          const content = document.createElement('span');
-
-          titleAnnotation.setAttribute('slot', 'title-annotation');
-          content.setAttribute('slot', 'content');
-
-          titleAnnotation.innerText = 'TitleAnnotation';
-          content.innerText = 'Content';
-
-          step.appendChild(titleAnnotation);
-          step.appendChild(content);
-
-          assert.isFalse(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
-          assert.isFalse(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
-          assert.isFalse(steps._shadow.querySelector('#content [slot="content"]').hidden);
-
-          titleAnnotation.remove();
-          content.remove();
-
-          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').hidden);
-          assert.isTrue(steps._shadow.querySelector('#title-annotation [slot="title-annotation"]').classList.has('vl-u-visually-hidden'));
-          assert.isTrue(steps._shadow.querySelector('#content [slot="content"]').hidden);
+          setTimeout(() => {
+            element = steps._stepsElement.children[0];
+            slots.forEach((identifier) => assert.isFalse(element.querySelector(`[slot="${identifier}"]`).parentElement.hidden));
+            slots.forEach((identifier) => step.querySelector(`[slot="${identifier}"]`).remove());
+    
+            setTimeout(() => {
+              element = steps._stepsElement.children[0];
+              slots.forEach((identifier) => assert.isTrue(element.querySelector(`[slot="${identifier}"]`).parentElement.hidden));
+              done();
+            });
+          });
         });
       });
     });
