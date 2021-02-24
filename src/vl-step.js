@@ -74,8 +74,7 @@ export class VlStep extends vlElement(HTMLElement) {
     const template = this._element.cloneNode(true);
     if (this._isToggleable) {
       vl.accordion.dress(template);
-      template.querySelector('#content').addEventListener('click',
-          (e) => e.stopPropagation());
+      template.querySelector('#content').addEventListener('click', (e) => e.stopPropagation());
     }
     return template;
   }
@@ -193,29 +192,6 @@ export class VlStep extends vlElement(HTMLElement) {
     if (slot) {
       slot.innerHTML = '';
     }
-  }
-
-  __removeSlotAfterMutation(label, removeSlot) {
-    const slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
-    if (slotInShadow) {
-      slotInShadow.remove();
-      removeSlot();
-    }
-  }
-
-  __addSlotAfterMutation(slot, label, createSlot) {
-    const slotCopy = slot.cloneNode(true);
-    let slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
-    if (!slotInShadow) {
-      createSlot(slotCopy);
-      slotInShadow = this._shadow.querySelector(`[slot="${label}"]`);
-    } else {
-      slotInShadow.innerHTML = slotCopy.innerHTML;
-    }
-    if (slotInShadow.parentNode.hidden) {
-      slotInShadow.parentNode.hidden = false;
-    }
-    slotInShadow.parentNode.classList.remove('vl-u-visually-hidden');
   }
 }
 
