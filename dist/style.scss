@@ -18,7 +18,7 @@
 // ==========================================================================
 @import "vl-ui-util/src/scss/util";
 
-#title-label {
+#title-label:not([hidden]) {
     display: inline-block;
     margin-left: 3rem;
 }
