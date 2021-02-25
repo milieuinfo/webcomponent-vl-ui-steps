@@ -121,11 +121,11 @@
         assert.isFalse(step._contentElement.hidden);
 
         step = fixture('vl-step-fixture');
-        assert.isFalse(step._iconElement.hidden);
-        assert.isFalse(step._subIconElement.hidden);
-        assert.isFalse(step._titleElement.hidden);
+        assert.isTrue(step._iconElement.hidden);
+        assert.isTrue(step._subIconElement.hidden);
+        assert.isTrue(step._titleElement.hidden);
         assert.isTrue(step._titleAnnotationElement.hidden);
-        assert.isFalse(step._subTitleElement.hidden);
+        assert.isTrue(step._subTitleElement.hidden);
         assert.isTrue(step._contentElement.hidden);
       });
 
